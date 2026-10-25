@@ -214,7 +214,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     } catch (err) {
       set({
         sessionRunsError:
-          err instanceof Error ? err.message : "无法加载运行列表",
+          err instanceof Error ? err.message : "Failed to load run list",
       });
     }
   },
@@ -237,7 +237,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   saveProviderSettings: async ({ apiBaseUrl, model, providerId }) => {
     const { baseUrl, config } = get();
     if (!baseUrl) {
-      throw new Error("Server base URL 未就绪");
+      throw new Error("Server base URL not ready");
     }
     const current = config ?? (await fetchConfig(baseUrl));
     const id = providerId ?? current.providers.default ?? "openai";
@@ -285,12 +285,12 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
   setDefaultModel: async (modelRef) => {
     const { baseUrl, config } = get();
     if (!baseUrl) {
-      set({ error: "Server base URL 未就绪" });
+      set({ error: "Server base URL not ready" });
       return;
     }
     const trimmed = modelRef.trim();
     if (!trimmed) {
-      set({ error: "模型不能为空" });
+      set({ error: "Model name cannot be empty" });
       return;
     }
     try {
@@ -302,7 +302,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       const slash = trimmed.indexOf("/");
       const providerId = slash >= 0 ? trimmed.slice(0, slash) : trimmed;
       if (!current.providers.entries[providerId]) {
-        set({ error: `未知 Provider：${providerId}` });
+        set({ error: `Unknown provider: ${providerId}` });
         return;
       }
 
@@ -334,7 +334,7 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     try {
       const { baseUrl } = get();
       if (!baseUrl) {
-        throw new Error("Server base URL 未就绪，请打开「设置」查看 health");
+        throw new Error("Server base URL not ready — open Settings to check health");
       }
       const created = await createSession(baseUrl, title);
       await get().refreshSessions();

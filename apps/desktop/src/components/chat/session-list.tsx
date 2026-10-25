@@ -24,22 +24,22 @@ export function SessionList() {
   return (
     <aside className="panel" data-session-list>
       <div className="panel-header">
-        <h2 className="panel-title">会话</h2>
+        <h2 className="panel-title">Sessions</h2>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button size="sm" data-session-create>
-              新建
+              New
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>新建会话</DialogTitle>
-              <DialogDescription>标题可选，会话存在 SQLite。</DialogDescription>
+              <DialogTitle>New Session</DialogTitle>
+              <DialogDescription>Title is optional. Sessions are stored in SQLite.</DialogDescription>
             </DialogHeader>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="会话标题"
+              placeholder="Session title"
               data-session-title-input
             />
             <DialogFooter>
@@ -56,7 +56,7 @@ export function SessionList() {
                   );
                 }}
               >
-                创建
+                Create
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -66,7 +66,7 @@ export function SessionList() {
         <ul className="p-2">
           {sessions.length === 0 ? (
             <li className="px-2 py-6 text-center text-xs text-muted-foreground">
-              暂无会话
+              No sessions yet
             </li>
           ) : (
             sessions.map((session) => (

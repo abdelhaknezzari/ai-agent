@@ -22,14 +22,14 @@ import { McpSettingsPanel } from "./mcp-settings-panel";
 import { MemorySettingsPanel } from "./memory-settings-panel";
 
 const SECTIONS = [
-  { id: "section-models", label: "模型与 Provider", icon: Cpu },
+  { id: "section-models", label: "Models & Provider", icon: Cpu },
   { id: "section-agent", label: "Agent", icon: Bot },
-  { id: "section-permissions", label: "权限", icon: Shield },
-  { id: "section-appearance", label: "外观", icon: Palette },
+  { id: "section-permissions", label: "Permissions", icon: Shield },
+  { id: "section-appearance", label: "Appearance", icon: Palette },
   { id: "section-mcp", label: "MCP", icon: Puzzle },
-  { id: "section-memory", label: "长期记忆", icon: Brain },
-  { id: "section-advanced", label: "高级", icon: SlidersHorizontal },
-  { id: "section-about", label: "关于", icon: Info },
+  { id: "section-memory", label: "Long-term Memory", icon: Brain },
+  { id: "section-advanced", label: "Advanced", icon: SlidersHorizontal },
+  { id: "section-about", label: "About", icon: Info },
 ] as const;
 
 type SectionId = (typeof SECTIONS)[number]["id"];
@@ -61,7 +61,7 @@ const PROVIDER_PRESETS: Record<
     models: ["claude-sonnet-4-5", "claude-3-5-haiku-latest"],
   },
   custom: {
-    label: "自定义（OpenAI 兼容）",
+    label: "Custom (OpenAI-compatible)",
     format: "openai_compatible",
     baseUrl: "http://127.0.0.1:11434/v1",
     apiKeyEnv: "OPENAI_API_KEY",
@@ -222,15 +222,15 @@ export function SettingsPage() {
   return (
     <div data-settings-page className="flex h-full min-h-0 flex-col">
       <header className="topbar">
-        <span className="topbar-title">设置</span>
-        <button type="button" className="avatar" aria-label="用户菜单">
+        <span className="topbar-title">Settings</span>
+        <button type="button" className="avatar" aria-label="User menu">
           <User />
         </button>
       </header>
 
       <div className="content">
         <div className="settings-shell">
-          <nav className="settings-sidebar" aria-label="设置分类">
+          <nav className="settings-sidebar" aria-label="Settings categories">
             {SECTIONS.map((section) => {
               const Icon = section.icon;
               return (
@@ -250,7 +250,7 @@ export function SettingsPage() {
 
           <div className="settings-content">
             {loading && !config ? (
-              <p className="helper-text">正在加载配置…</p>
+              <p className="helper-text">Loading configuration…</p>
             ) : null}
             {statusLine ? (
               <p
@@ -265,20 +265,20 @@ export function SettingsPage() {
             <section className="settings-section" id="section-models">
               <div className="section-card">
                 <div className="section-header">
-                  <h2 className="section-title">模型与 Provider</h2>
+                  <h2 className="section-title">Models & Provider</h2>
                   <p className="section-subtitle">
-                    填写 Base URL、模型名和 Token。OpenAI 兼容与 Anthropic 可切换，保存后下一轮对话生效。DeepSeek 等网关用「自定义」。
+                    Set the Base URL, model name, and token. Supports OpenAI-compatible and Anthropic — takes effect on the next conversation. Use "Custom" for gateways like DeepSeek.
                   </p>
                 </div>
                 <div className="section-body">
                   <div className="field-group">
-                    <span className="field-label">默认 Provider</span>
+                    <span className="field-label">Default Provider</span>
                     <div className="provider-segment" role="radiogroup">
                       {(
                         [
                           ["openai", "OpenAI"],
                           ["anthropic", "Anthropic"],
-                          ["custom", "自定义"],
+                          ["custom", "Custom"],
                         ] as const
                       ).map(([id, label]) => (
                         <button
@@ -327,11 +327,11 @@ export function SettingsPage() {
                       onEdit={() => applyProviderPreset("anthropic")}
                     />
                     <ProviderCard
-                      name="自定义"
+                      name="Custom"
                       meta={
                         config
-                          ? entryBaseUrl(config, "custom") || "未设置"
-                          : "未设置"
+                          ? entryBaseUrl(config, "custom") || "Not set"
+                          : "Not set"
                       }
                       configured={
                         config
@@ -370,10 +370,10 @@ export function SettingsPage() {
                       disabled={keyFromEnv}
                       placeholder={
                         keyFromEnv
-                          ? "来自环境变量（只读）"
+                          ? "Provided by environment variable (read-only)"
                           : keyConfigured
-                            ? "已配置 — 输入新值以替换"
-                            : "输入 API Key"
+                            ? "Configured — enter a new value to replace"
+                            : "Enter API Key"
                       }
                       autoComplete="off"
                       onChange={(e) => {
@@ -384,18 +384,18 @@ export function SettingsPage() {
                     {keyConfigured ? (
                       <span className="badge badge-success" style={{ marginTop: 8 }}>
                         <Check width={12} height={12} aria-hidden />
-                        {keyFromEnv ? "已配置（环境变量）" : "已配置"}
+                        {keyFromEnv ? "Configured (env var)" : "Configured"}
                       </span>
                     ) : (
                       <span className="badge badge-muted" style={{ marginTop: 8 }}>
-                        未配置
+                        Not configured
                       </span>
                     )}
                   </div>
 
                   <div className="field-group input-short">
                     <label className="field-label" htmlFor="api-key-env">
-                      引用名
+                      Env var name
                     </label>
                     <input
                       className="text-input"
@@ -408,13 +408,13 @@ export function SettingsPage() {
                       }}
                     />
                     <span className="field-hint">
-                      对应环境变量名，用于运行时的凭据读取。
+                      The environment variable name used to read credentials at runtime.
                     </span>
                   </div>
 
                   <div className="field-group input-medium">
                     <label className="field-label" htmlFor="model-name">
-                      模型名
+                      Model name
                     </label>
                     <input
                       className="text-input"
@@ -428,7 +428,7 @@ export function SettingsPage() {
                       placeholder="gpt-4.1"
                     />
                     <span className="field-hint">
-                      保存为 {providerId}/{modelName.trim() || "…"}，工作台可在已保存模型间切换。
+                      Saved as {providerId}/{modelName.trim() || "…"} — switch between saved models in the workbench.
                     </span>
                   </div>
 
@@ -463,9 +463,9 @@ export function SettingsPage() {
                         }).then(() => setApiKeyDraft(""));
                       }}
                     >
-                      {saving ? "保存中…" : "保存"}
+                      {saving ? "Saving…" : "Save"}
                     </button>
-                    <span className="helper-text">已保存，下一轮对话生效</span>
+                    <span className="helper-text">Saved — takes effect on the next conversation</span>
                   </div>
                 </div>
               </div>
@@ -476,13 +476,13 @@ export function SettingsPage() {
                 <div className="section-header">
                   <h2 className="section-title">Agent</h2>
                   <p className="section-subtitle">
-                    调整系统提示词、内置工具开关与调用限制。
+                    Adjust system prompt, built-in tool toggles, and call limits.
                   </p>
                 </div>
                 <div className="section-body">
                   <div className="field-group">
                     <label className="field-label" htmlFor="system-prompt">
-                      系统提示词
+                      System prompt
                     </label>
                     <textarea
                       className="textarea"
@@ -496,15 +496,15 @@ export function SettingsPage() {
                   </div>
 
                   <div className="field-group">
-                    <span className="field-label">内置工具</span>
+                    <span className="field-label">Built-in tools</span>
                     <div className="switch-row">
                       <div className="switch-label">
                         <span className="switch-title">http_fetch</span>
                         <span className="switch-desc">
-                          允许 Agent 发起 HTTP 请求获取网络内容
+                          Allow the Agent to make HTTP requests to fetch web content
                         </span>
                       </div>
-                      <label className="switch" aria-label="启用 http_fetch">
+                      <label className="switch" aria-label="Enable http_fetch">
                         <input
                           type="checkbox"
                           checked={httpFetch}
@@ -520,10 +520,10 @@ export function SettingsPage() {
                       <div className="switch-label">
                         <span className="switch-title">read_file</span>
                         <span className="switch-desc">
-                          允许 Agent 读取本地文件内容
+                          Allow the Agent to read local file contents
                         </span>
                       </div>
-                      <label className="switch" aria-label="启用 read_file">
+                      <label className="switch" aria-label="Enable read_file">
                         <input
                           type="checkbox"
                           checked={readFile}
@@ -563,7 +563,7 @@ export function SettingsPage() {
                         className="text-input"
                         id="max-tool-calls"
                         type="number"
-                        placeholder="不限制"
+                        placeholder="No limit"
                         value={maxToolCalls}
                         onChange={(e) => {
                           setMaxToolCalls(e.target.value);
@@ -605,7 +605,7 @@ export function SettingsPage() {
                         });
                       }}
                     >
-                      {saving ? "保存中…" : "保存"}
+                      {saving ? "Saving…" : "Save"}
                     </button>
                   </div>
                 </div>
@@ -615,15 +615,15 @@ export function SettingsPage() {
             <section className="settings-section" id="section-permissions">
               <div className="section-card">
                 <div className="section-header">
-                  <h2 className="section-title">权限</h2>
+                  <h2 className="section-title">Permissions</h2>
                   <p className="section-subtitle">
-                    控制 Agent 执行敏感操作时的确认策略。
+                    Control the confirmation policy when the Agent executes sensitive operations.
                   </p>
                 </div>
                 <div className="section-body">
                   <div className="field-group input-medium">
                     <label className="field-label" htmlFor="perm-mode">
-                      权限模式
+                      Permission mode
                     </label>
                     <select
                       className="select"
@@ -643,7 +643,7 @@ export function SettingsPage() {
                   </div>
                   <div className="field-group">
                     <label className="field-label" htmlFor="allowlist">
-                      允许列表
+                      Allowlist
                     </label>
                     <textarea
                       className="textarea"
@@ -656,7 +656,7 @@ export function SettingsPage() {
                       }}
                     />
                     <span className="field-hint">
-                      每行一个工具名；仅在 allowlist 模式下生效。
+                      One tool name per line; only active in allowlist mode.
                     </span>
                   </div>
                   <div className="action-row">
@@ -679,7 +679,7 @@ export function SettingsPage() {
                         });
                       }}
                     >
-                      {saving ? "保存中…" : "保存"}
+                      {saving ? "Saving…" : "Save"}
                     </button>
                   </div>
                 </div>
@@ -689,12 +689,12 @@ export function SettingsPage() {
             <section className="settings-section" id="section-appearance">
               <div className="section-card">
                 <div className="section-header">
-                  <h2 className="section-title">外观</h2>
-                  <p className="section-subtitle">主题偏好保存在本机，立即生效。</p>
+                  <h2 className="section-title">Appearance</h2>
+                  <p className="section-subtitle">Theme preference is saved locally and takes effect immediately.</p>
                 </div>
                 <div className="section-body">
                   <div className="field-group">
-                    <span className="field-label">主题</span>
+                    <span className="field-label">Theme</span>
                     <div className="theme-grid">
                       {(
                         [
@@ -710,7 +710,7 @@ export function SettingsPage() {
                           data-theme-option={id}
                           onClick={() => {
                             setTheme(id);
-                            setAppearanceHint("主题已应用");
+                            setAppearanceHint("Theme applied");
                             clearHints();
                           }}
                         >
@@ -722,19 +722,19 @@ export function SettingsPage() {
                   </div>
                   <div className="field-group input-short">
                     <label className="field-label" htmlFor="font">
-                      字体
+                      Font
                     </label>
                     <select className="select" id="font" defaultValue="system" disabled>
-                      <option value="system">系统默认</option>
+                      <option value="system">System default</option>
                     </select>
                   </div>
                   <div className="action-row">
                     <button
                       className="btn btn-primary"
                       type="button"
-                      onClick={() => setAppearanceHint("主题已应用")}
+                      onClick={() => setAppearanceHint("Theme applied")}
                     >
-                      保存
+                      Save
                     </button>
                   </div>
                 </div>
@@ -746,14 +746,14 @@ export function SettingsPage() {
                 <div className="section-header">
                   <h2 className="section-title">MCP</h2>
                   <p className="section-subtitle">
-                    Model Context Protocol 服务器配置。
+                    Model Context Protocol server configuration.
                   </p>
                 </div>
                 <div className="section-body">
                   {config && baseUrl ? (
                     <McpSettingsPanel baseUrl={baseUrl} config={config} />
                   ) : (
-                    <p className="helper-text">加载配置中…</p>
+                    <p className="helper-text">Loading configuration…</p>
                   )}
                 </div>
               </div>
@@ -762,9 +762,9 @@ export function SettingsPage() {
             <section className="settings-section" id="section-memory">
               <div className="section-card">
                 <div className="section-header">
-                  <h2 className="section-title">长期记忆</h2>
+                  <h2 className="section-title">Long-term Memory</h2>
                   <p className="section-subtitle">
-                    跨会话检索/写入走 OpenViking（AGPLv3 可选）
+                    Cross-session retrieval / write via OpenViking (AGPLv3, optional)
                   </p>
                 </div>
                 <div className="section-body">
@@ -775,7 +775,7 @@ export function SettingsPage() {
                       onScrollToModels={() => scrollTo("section-models")}
                     />
                   ) : (
-                    <p className="helper-text">加载配置中…</p>
+                    <p className="helper-text">Loading configuration…</p>
                   )}
                 </div>
               </div>
@@ -784,23 +784,23 @@ export function SettingsPage() {
             <section className="settings-section" id="section-advanced">
               <div className="section-card">
                 <div className="section-header">
-                  <h2 className="section-title">高级</h2>
-                  <p className="section-subtitle">面向调试与实验性能力的开关。</p>
+                  <h2 className="section-title">Advanced</h2>
+                  <p className="section-subtitle">Toggles for debugging and experimental features.</p>
                 </div>
                 <div className="section-body">
                   <div className="switch-row">
                     <div className="switch-label">
-                      <span className="switch-title">开发者模式</span>
-                      <span className="switch-desc">受限制 · 后续开放</span>
+                      <span className="switch-title">Developer mode</span>
+                      <span className="switch-desc">Restricted · available later</span>
                     </div>
-                    <label className="switch" aria-label="开发者模式">
+                    <label className="switch" aria-label="Developer mode">
                       <input type="checkbox" disabled />
                       <span className="slider" />
                     </label>
                   </div>
                   <div className="advanced-box">
                     <span className="helper-text">
-                      A2A、Hooks 与更多高级选项将在此分区补充。
+                      A2A, Hooks, and more advanced options will be added here.
                     </span>
                   </div>
                 </div>
@@ -810,13 +810,13 @@ export function SettingsPage() {
             <section className="settings-section" id="section-about">
               <div className="section-card">
                 <div className="section-header">
-                  <h2 className="section-title">关于</h2>
-                  <p className="section-subtitle">运行时与本机配置路径。</p>
+                  <h2 className="section-title">About</h2>
+                  <p className="section-subtitle">Runtime and local configuration paths.</p>
                 </div>
                 <div className="section-body">
                   <dl className="about-list">
                     <div className="about-row">
-                      <dt>版本</dt>
+                      <dt>Version</dt>
                       <dd>{system?.version ?? "0.0.0"}</dd>
                     </div>
                     <div className="about-row">
@@ -828,11 +828,11 @@ export function SettingsPage() {
                       <dd>{health}</dd>
                     </div>
                     <div className="about-row">
-                      <dt>config 路径</dt>
+                      <dt>Config path</dt>
                       <dd>{system?.configPath ?? "~/.agent2026/config.yaml"}</dd>
                     </div>
                     <div className="about-row">
-                      <dt>credentials 路径</dt>
+                      <dt>Credentials path</dt>
                       <dd>
                         {system?.credentialsPath ?? "~/.agent2026/credentials.yaml"}
                       </dd>
@@ -841,7 +841,7 @@ export function SettingsPage() {
                   <div className="action-row">
                     <button className="btn btn-primary" type="button" disabled>
                       <Check width={16} height={16} aria-hidden />
-                      检查更新
+                      Check for updates
                     </button>
                   </div>
                 </div>
@@ -875,10 +875,10 @@ function ProviderCard({
         {configured ? (
           <span className="badge badge-success">
             <Check width={12} height={12} aria-hidden />
-            已配置
+            Configured
           </span>
         ) : (
-          <span className="badge badge-muted">未配置</span>
+          <span className="badge badge-muted">Not configured</span>
         )}
         <button className="btn btn-secondary btn-sm" type="button" onClick={onEdit}>
           Edit

@@ -234,15 +234,15 @@ export function McpSettingsPanel({
   const onSave = async () => {
     const name = form.name.trim();
     if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
-      setFormError("名称须匹配 [a-zA-Z0-9_-]+");
+      setFormError("Name must match [a-zA-Z0-9_-]+");
       return;
     }
     if (form.transport === "stdio" && !form.command.trim()) {
-      setFormError("stdio 需要 command");
+      setFormError("stdio requires a command");
       return;
     }
     if (form.transport === "http" && !form.url.trim()) {
-      setFormError("http 需要 url");
+      setFormError("http requires a url");
       return;
     }
     try {
@@ -262,7 +262,7 @@ export function McpSettingsPanel({
     <div className="mcp-panel">
       <div className="mcp-toolbar">
         <p className="mcp-toolbar-hint">
-          禁用后立即断开，且不会提供给 Agent。
+          Disabled immediately — not provided to the Agent.
         </p>
         <div className="mcp-toolbar-actions">
           <button
@@ -272,11 +272,11 @@ export function McpSettingsPanel({
             onClick={() => void refreshToolLists()}
           >
             <RefreshCw width={14} height={14} aria-hidden />
-            刷新工具列表
+            Refresh tool list
           </button>
           <button className="btn btn-primary" type="button" onClick={openCreate}>
             <Plus width={14} height={14} aria-hidden />
-            添加 MCP
+            Add MCP
           </button>
         </div>
       </div>
@@ -286,10 +286,10 @@ export function McpSettingsPanel({
           <Puzzle width={20} height={20} aria-hidden />
           <div>
             <p className="mcp-empty-text">
-              尚未配置 MCP Server。可添加本地 stdio 或远程 HTTP MCP，添加后可在此查看连接状态与发现的工具。
+              No MCP Servers configured yet. Add a local stdio or remote HTTP MCP — then view connection status and discovered tools here.
             </p>
             <button type="button" className="mcp-link" onClick={openCreate}>
-              添加第一个 MCP
+              Add your first MCP
             </button>
           </div>
         </div>
@@ -328,7 +328,7 @@ export function McpSettingsPanel({
                   </div>
                   {name === "openviking" ? (
                     <div className="mcp-managed-hint">
-                      由长期记忆管理启停
+                      Managed by Long-term Memory
                     </div>
                   ) : null}
                   {status?.lastError && resolvedStatus === "error" ? (
@@ -343,13 +343,13 @@ export function McpSettingsPanel({
                 </div>
                 {showToolCount ? (
                   <div className="mcp-tool-count">
-                    {status.toolCount} 个工具
+                    {status.toolCount} tools
                   </div>
                 ) : (
                   <div className="mcp-tool-count mcp-tool-count-spacer" aria-hidden />
                 )}
                 <div className="mcp-server-actions">
-                  <label className="switch" aria-label={`启用 ${name}`}>
+                  <label className="switch" aria-label={`Enable ${name}`}>
                     <input
                       type="checkbox"
                       checked={serverConfig.enabled}
@@ -363,7 +363,7 @@ export function McpSettingsPanel({
                   <button
                     type="button"
                     className="mcp-icon-btn"
-                    aria-label={`编辑 ${name}`}
+                    aria-label={`Edit ${name}`}
                     onClick={() => openEdit(name, serverConfig)}
                   >
                     <Pencil width={15} height={15} />
@@ -372,11 +372,11 @@ export function McpSettingsPanel({
                     type="button"
                     className="mcp-icon-btn"
                     disabled={saving}
-                    aria-label={`删除 ${name}`}
+                    aria-label={`Delete ${name}`}
                     onClick={() => {
                       if (
                         window.confirm(
-                          `删除 MCP「${name}」？配置将移除，若已启用会断开连接。`,
+                          `Delete MCP "${name}"? The configuration will be removed and the connection will be dropped if enabled.`,
                         )
                       ) {
                         void deleteMcpServer(baseUrl, name);
@@ -388,7 +388,7 @@ export function McpSettingsPanel({
                   <button
                     type="button"
                     className="mcp-icon-btn"
-                    aria-label={isExpanded ? `收起 ${name} 工具` : `展开 ${name} 工具`}
+                    aria-label={isExpanded ? `Collapse ${name} tools` : `Expand ${name} tools`}
                     aria-expanded={isExpanded}
                     onClick={() => setExpanded(isExpanded ? null : name)}
                   >
@@ -403,14 +403,13 @@ export function McpSettingsPanel({
               {isExpanded ? (
                 <div className="mcp-tools">
                   <div className="mcp-tools-meta">
-                    {mounted.has(name) ? "已挂载到当前 Agent" : "未挂载到当前 Agent"}
+                    {mounted.has(name) ? "Mounted to current Agent" : "Not mounted to current Agent"}
                   </div>
                   {!serverConfig.enabled ? (
-                    <p className="helper-text">已禁用，未连接。</p>
+                    <p className="helper-text">Disabled, not connected.</p>
                   ) : status?.status === "error" ? (
                     <p className="helper-text">
-                      连接失败：{status.lastError ?? "未知错误"}。请检查
-                      command/URL/鉴权后刷新工具列表。
+                      Connection failed: {status.lastError ?? "unknown error"}. Check the command/URL/auth and refresh the tool list.
                     </p>
                   ) : status?.tools.length ? (
                     <ul>
@@ -426,8 +425,8 @@ export function McpSettingsPanel({
                   ) : (
                     <p className="helper-text">
                       {status?.status === "ready"
-                        ? "已连接，暂无工具"
-                        : "等待连接…"}
+                        ? "Connected, no tools"
+                        : "Waiting for connection…"}
                     </p>
                   )}
                 </div>
@@ -440,13 +439,13 @@ export function McpSettingsPanel({
       {formOpen ? (
         <div className="mcp-form">
           <h3 className="mcp-form-title">
-            {form.previousName ? `编辑 ${form.previousName}` : "新增 MCP"}
+            {form.previousName ? `Edit ${form.previousName}` : "Add MCP"}
           </h3>
           {formError ? <p className="field-error">{formError}</p> : null}
           <div className="field-grid">
             <div className="field">
               <label className="field-label" htmlFor="mcp-name">
-                名称（key）
+                Name (key)
               </label>
               <input
                 id="mcp-name"
@@ -460,7 +459,7 @@ export function McpSettingsPanel({
             </div>
             <div className="field">
               <label className="field-label" htmlFor="mcp-transport">
-                传输类型
+                Transport type
               </label>
               <select
                 id="mcp-transport"
@@ -496,7 +495,7 @@ export function McpSettingsPanel({
               </div>
               <div className="field">
                 <label className="field-label" htmlFor="mcp-args">
-                  Args（每行一个）
+                  Args (one per line)
                 </label>
                 <textarea
                   id="mcp-args"
@@ -510,7 +509,7 @@ export function McpSettingsPanel({
               </div>
               <div className="field">
                 <label className="field-label" htmlFor="mcp-env">
-                  Env 非密键值（KEY=value，每行一个）
+                  Env non-secret key=value (one per line)
                 </label>
                 <textarea
                   id="mcp-env"
@@ -524,7 +523,7 @@ export function McpSettingsPanel({
               </div>
               <div className="field">
                 <label className="field-label" htmlFor="mcp-cwd">
-                  cwd（可选）
+                  cwd (optional)
                 </label>
                 <input
                   id="mcp-cwd"
@@ -553,7 +552,7 @@ export function McpSettingsPanel({
               </div>
               <div className="field">
                 <label className="field-label" htmlFor="mcp-headers">
-                  Headers（Key: Value，每行一个；敏感值回显掩码）
+                  Headers (Key: Value, one per line; sensitive values masked)
                 </label>
                 <textarea
                   id="mcp-headers"
@@ -568,12 +567,12 @@ export function McpSettingsPanel({
                   }
                 />
                 <p className="helper-text">
-                  勿把长期密钥写进配置；优先用凭证引用。留着掩码字符串保存时会保留原密钥。
+                  Do not store long-lived secrets in config; prefer credential references. Saving a masked string preserves the original key.
                 </p>
               </div>
               <div className="field">
                 <label className="field-label" htmlFor="mcp-subtype">
-                  HTTP 方言
+                  HTTP dialect
                 </label>
                 <select
                   id="mcp-subtype"
@@ -586,7 +585,7 @@ export function McpSettingsPanel({
                     }))
                   }
                 >
-                  <option value="streamable">Streamable HTTP（默认）</option>
+                  <option value="streamable">Streamable HTTP (default)</option>
                   <option value="sse">SSE</option>
                 </select>
               </div>
@@ -595,10 +594,10 @@ export function McpSettingsPanel({
 
           <div className="switch-row">
             <div className="switch-label">
-              <span className="switch-title">启用</span>
-              <span className="switch-desc">关闭则断开且不进 ToolPort</span>
+              <span className="switch-title">Enable</span>
+              <span className="switch-desc">Disabling disconnects and removes from ToolPort</span>
             </div>
-            <label className="switch" aria-label="启用 MCP">
+            <label className="switch" aria-label="Enable MCP">
               <input
                 type="checkbox"
                 checked={form.enabled}
@@ -611,12 +610,12 @@ export function McpSettingsPanel({
           </div>
           <div className="switch-row">
             <div className="switch-label">
-              <span className="switch-title">挂载到当前 Agent</span>
+              <span className="switch-title">Mount to current Agent</span>
               <span className="switch-desc">
-                写入 agents.default.tools.mcpServers
+                Writes to agents.default.tools.mcpServers
               </span>
             </div>
-            <label className="switch" aria-label="挂载到 Agent">
+            <label className="switch" aria-label="Mount to Agent">
               <input
                 type="checkbox"
                 checked={form.mount}
@@ -635,14 +634,14 @@ export function McpSettingsPanel({
               disabled={saving}
               onClick={() => void onSave()}
             >
-              保存
+              Save
             </button>
             <button
               className="btn btn-secondary"
               type="button"
               onClick={() => setFormOpen(false)}
             >
-              取消
+              Cancel
             </button>
           </div>
         </div>

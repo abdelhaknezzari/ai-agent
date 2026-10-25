@@ -92,17 +92,17 @@ export function RunDetails() {
       className={`panel trace-sidebar${hasData ? " has-data" : ""}`}
       data-run-details
       data-trace-panel
-      aria-label="调用轨迹"
+      aria-label="Call trace"
     >
       <div className="trace-title-bar">
         <h2 className="trace-title">
           <Activity width={18} height={18} aria-hidden />
-          <span>调用轨迹</span>
+          <span>Trace</span>
         </h2>
         <button
           type="button"
           className="trace-close"
-          aria-label="关闭调用轨迹"
+          aria-label="Close trace panel"
           data-trace-close
           onClick={() => setTracePanelOpen(false)}
         >
@@ -120,14 +120,14 @@ export function RunDetails() {
         <div className="trace-error" data-trace-runs-error>
           <p>{sessionRunsError}</p>
           <button type="button" onClick={() => void refreshSessionRuns()}>
-            重试
+            Retry
           </button>
         </div>
       ) : null}
 
       <div className="trace-run-switcher" data-trace-run-switcher>
         <label className="sr-only" htmlFor="trace-run-select">
-          选择 run
+          Select run
         </label>
         <select
           id="trace-run-select"
@@ -141,7 +141,7 @@ export function RunDetails() {
           }}
         >
           {runOptions.length === 0 ? (
-            <option value="">暂无 run</option>
+            <option value="">No runs</option>
           ) : (
             runOptions.map((item) => (
               <option key={item.runId} value={item.runId}>
@@ -161,14 +161,14 @@ export function RunDetails() {
             data-demo-tool
             onClick={injectDemoTool}
           >
-            演示工具卡
+            Demo tool card
           </Button>
         </div>
       ) : null}
 
       {view.loading ? (
         <div className="trace-loading" data-trace-loading>
-          加载历史轨迹…
+          Loading trace history…
         </div>
       ) : null}
 
@@ -176,7 +176,7 @@ export function RunDetails() {
         <div className="trace-error" data-trace-error>
           <p>{view.error}</p>
           <button type="button" onClick={onRetry}>
-            重试
+            Retry
           </button>
         </div>
       ) : null}
@@ -184,13 +184,13 @@ export function RunDetails() {
       {showEmpty ? (
         <div className="trace-empty-state" data-trace-empty>
           <GitBranch width={32} height={32} aria-hidden />
-          <p>发送消息后这里会显示调用轨迹</p>
+          <p>Send a message to see the call trace here</p>
         </div>
       ) : null}
 
       {showNoSpans ? (
         <div className="trace-empty-state" data-trace-empty>
-          <p>该次运行暂无详细轨迹</p>
+          <p>No detailed trace for this run</p>
         </div>
       ) : null}
 

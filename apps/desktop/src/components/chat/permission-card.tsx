@@ -5,17 +5,17 @@ type PermissionItem = Extract<ChatItem, { kind: "permission" }>;
 type PermissionStatus = PermissionItem["status"];
 
 const STATUS_LABEL: Record<Exclude<PermissionStatus, "pending">, string> = {
-  allowed: "已允许",
-  session_allowed: "本会话已允许",
-  denied: "已拒绝",
-  expired: "已失效",
+  allowed: "Allowed",
+  session_allowed: "Allowed for this session",
+  denied: "Denied",
+  expired: "Expired",
 };
 
 function permissionSubtitle(toolName: string): string {
   if (toolName === "read_file") {
-    return "Agent 希望读取本地文件以继续完成任务";
+    return "Agent wants to read a local file to complete the task";
   }
-  return "Agent 希望调用该工具以继续完成任务";
+  return "Agent wants to call this tool to complete the task";
 }
 
 function formatPermissionArgs(args: unknown): string {
@@ -68,7 +68,7 @@ export function PermissionCard({
           </div>
           <div className="permission-card-titles">
             <div className="permission-card-title">
-              工具权限请求 · {item.toolName}
+              Tool permission request · {item.toolName}
             </div>
             <div className="permission-card-subtitle">
               {permissionSubtitle(item.toolName)}
@@ -84,7 +84,7 @@ export function PermissionCard({
             data-permission-action="allow"
             onClick={() => onRespond(item.requestId, true, "once")}
           >
-            允许
+            Allow
           </button>
           <button
             type="button"
@@ -93,7 +93,7 @@ export function PermissionCard({
             data-permission-action="session"
             onClick={() => onRespond(item.requestId, true, "session")}
           >
-            本会话允许
+            Allow for this session
           </button>
           <button
             type="button"
@@ -102,7 +102,7 @@ export function PermissionCard({
             data-permission-action="deny"
             onClick={() => onRespond(item.requestId, false)}
           >
-            拒绝
+            Deny
           </button>
         </div>
         {!pending ? (

@@ -166,7 +166,7 @@ function syncSessionConfig(config: AppConfig): void {
 
 function ensureConfig(config: AppConfig | null): AppConfig {
   if (!config) {
-    throw new Error("配置尚未加载");
+    throw new Error("Configuration not yet loaded");
   }
   return config;
 }
@@ -252,7 +252,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         openVikingStatus,
         mcpStatus,
         saving: false,
-        saveHint: "已重试 OpenViking",
+        saveHint: "Retried OpenViking",
         error: null,
       });
     } catch (err) {
@@ -330,8 +330,8 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         mcpStatus,
         saving: false,
         saveHint: enabled
-          ? "已启用 OpenViking，正在准备…"
-          : "已禁用 OpenViking",
+          ? "OpenViking enabled, starting…"
+          : "OpenViking disabled",
         error: null,
       });
     } catch (err) {
@@ -365,7 +365,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         config: saved,
         distillStatus,
         saving: false,
-        saveHint: enabled ? "已开启自动提炼" : "已关闭自动提炼",
+        saveHint: enabled ? "Auto-distill enabled" : "Auto-distill disabled",
         error: null,
       });
     } catch (err) {
@@ -395,7 +395,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       set({
         config: saved,
         saving: false,
-        saveHint: enabled ? "已开启自动召回" : "已关闭自动召回",
+        saveHint: enabled ? "Auto-recall enabled" : "Auto-recall disabled",
         error: null,
       });
     } catch (err) {
@@ -415,7 +415,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       const model = input.model.trim();
       const apiKeyEnv = input.apiKeyEnv.trim();
       if (!embBaseUrl || !model || !apiKeyEnv) {
-        throw new Error("请填写 Embedding 的 Base URL、模型名与 API Key 环境变量");
+        throw new Error("Please fill in the Embedding Base URL, model name, and API Key env var");
       }
       const next: AppConfig = {
         ...current,
@@ -456,7 +456,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         credentials,
         openVikingStatus,
         saving: false,
-        saveHint: "已保存 Embedding 配置",
+        saveHint: "Embedding configuration saved",
         error: null,
       });
     } catch (err) {
@@ -491,7 +491,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         config: saved,
         openVikingStatus,
         saving: false,
-        saveHint: "已保存 VLM 覆盖",
+        saveHint: "VLM override saved",
         error: null,
       });
     } catch (err) {
@@ -575,7 +575,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         config: saved,
         credentials,
         saving: false,
-        saveHint: "已保存，下一轮对话生效",
+        saveHint: "Saved — takes effect on the next conversation",
         error: null,
       });
     } catch (err) {
@@ -612,7 +612,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       set({
         config: saved,
         saving: false,
-        saveHint: "已保存，下一轮对话生效",
+        saveHint: "Saved — takes effect on the next conversation",
         error: null,
       });
     } catch (err) {
@@ -640,7 +640,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       set({
         config: saved,
         saving: false,
-        saveHint: "已保存，下一轮对话生效",
+        saveHint: "Saved — takes effect on the next conversation",
         error: null,
       });
     } catch (err) {
@@ -700,7 +700,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         config: saved,
         mcpStatus,
         saving: false,
-        saveHint: "MCP 已保存，连接状态见下方",
+        saveHint: "MCP saved — connection status shown below",
         error: null,
       });
     } catch (err) {
@@ -743,7 +743,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         config: saved,
         mcpStatus,
         saving: false,
-        saveHint: "已删除 MCP Server",
+        saveHint: "MCP Server deleted",
         error: null,
       });
     } catch (err) {
@@ -759,7 +759,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
     const current = ensureConfig(get().config);
     const server = current.mcpServers?.[name];
     if (!server) {
-      throw new Error(`未知 MCP Server: ${name}`);
+      throw new Error(`Unknown MCP Server: ${name}`);
     }
     set({ saving: true, error: null, saveHint: null });
     try {
@@ -779,7 +779,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         config: saved,
         mcpStatus,
         saving: false,
-        saveHint: enabled ? "已启用，正在连接…" : "已禁用并断开",
+        saveHint: enabled ? "Enabled, connecting…" : "Disabled and disconnected",
         error: null,
       });
     } catch (err) {
@@ -799,7 +799,7 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
       set({
         mcpStatus,
         saving: false,
-        saveHint: `已刷新 ${name} 工具列表`,
+        saveHint: `Refreshed ${name} tool list`,
         error: null,
       });
     } catch (err) {

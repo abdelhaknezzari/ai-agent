@@ -23,9 +23,9 @@ export function ChatPane() {
     <section className="panel" data-chat-pane>
       <div className="panel-header session-header">
         <div className="flex min-w-0 flex-col gap-0.5">
-          <h2 className="panel-title session-title">对话</h2>
+          <h2 className="panel-title session-title">Chat</h2>
           <span className="font-mono text-[10px] text-muted-foreground">
-            {selectedSessionId ?? "未选择会话"} · {status}
+            {selectedSessionId ?? "No session selected"} · {status}
           </span>
         </div>
         <button
@@ -36,16 +36,15 @@ export function ChatPane() {
           onClick={() => setTracePanelOpen(!tracePanelOpen)}
         >
           <GitBranch width={16} height={16} aria-hidden />
-          调用轨迹
-        </button>
+          Trace</button>
       </div>
       <ScrollArea className="flex-1">
         <div data-chat-list className="space-y-2 p-3">
           {items.length === 0 ? (
             <p className="py-10 text-center text-sm text-muted-foreground">
               {selectedSessionId
-                ? "发送一条消息，气泡会投影 RunEvent。"
-                : "从左侧新建或选择会话。"}
+                ? "Send a message — bubbles will reflect RunEvents."
+                : "Create or select a session on the left."}
             </p>
           ) : (
             items.map((item) =>

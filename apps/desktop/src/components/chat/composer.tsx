@@ -41,14 +41,14 @@ export function Composer() {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={onKeyDown}
         disabled={!selectedSessionId || running}
-        placeholder={selectedSessionId ? "发给 Agent…" : "先新建或选择会话"}
+        placeholder={selectedSessionId ? "Message Agent…" : "Create or select a session first"}
       />
       <Button
         type="submit"
         data-composer-send
         disabled={!selectedSessionId || running || !value.trim()}
       >
-        发送
+        Send
       </Button>
       <Button
         type="button"
@@ -58,7 +58,7 @@ export function Composer() {
         disabled={!running || !runId}
         onClick={() => void stopCurrentRun()}
       >
-        停止
+        Stop
       </Button>
     </form>
   );

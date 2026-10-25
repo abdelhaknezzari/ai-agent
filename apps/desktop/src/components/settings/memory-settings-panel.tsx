@@ -33,16 +33,16 @@ function statusDetailText(
   lastError?: string,
 ): string | null {
   if (status === "ready") {
-    return ownedProcess ? "本进程拉起" : "复用已有服务";
+    return ownedProcess ? "Launched by this process" : "Reusing existing service";
   }
   if (lastError) {
     return lastError;
   }
   if (status === "needs_config") {
-    return "需要配置独立 Embedding 与 Provider API Key";
+    return "Requires a separate Embedding endpoint and Provider API Key";
   }
   if (status === "starting") {
-    return "正在准备…";
+    return "Starting…";
   }
   return null;
 }
@@ -51,9 +51,9 @@ function distillStatusText(status: DistillStatusView): string | null {
   if (status.lastStatus === "idle") {
     return null;
   }
-  const parts: string[] = [`上次提炼：${status.lastStatus}`];
+  const parts: string[] = [`Last distill: ${status.lastStatus}`];
   if (status.lastWritten != null) {
-    parts.push(`写入 ${status.lastWritten}`);
+    parts.push(`written ${status.lastWritten}`);
   }
   if (status.lastMessage) {
     parts.push(status.lastMessage);
@@ -174,12 +174,12 @@ export function MemorySettingsPanel({
     <div className="memory-panel" data-settings-memory-panel>
       <div className="switch-row">
         <div className="switch-label">
-          <span className="switch-title">启用 OpenViking</span>
+          <span className="switch-title">Enable OpenViking</span>
           <span className="switch-desc">
-            开启后 Agent 可通过 openviking__* 工具跨会话读写记忆
+            When enabled, the Agent can read and write memories across sessions via openviking__* tools
           </span>
         </div>
-        <label className="switch" aria-label="启用 OpenViking">
+        <label className="switch" aria-label="Enable OpenViking">
           <input
             type="checkbox"
             checked={enabled}
@@ -194,20 +194,20 @@ export function MemorySettingsPanel({
 
       <div className="switch-row">
         <div className="switch-label">
-          <span className="switch-title">run 结束后自动提炼</span>
+          <span className="switch-title">Auto-distill after run</span>
           <span className="switch-desc">
-            将本轮对话要点写入 OpenViking（需服务就绪）
+            Write key points from this conversation to OpenViking (requires service to be ready)
           </span>
           {!ovReady ? (
             <span className="switch-desc memory-distill-inactive">
-              当前未生效：OpenViking 未就绪
+              Currently inactive: OpenViking not ready
             </span>
           ) : null}
           {lastDistill ? (
             <span className="switch-desc memory-distill-last">{lastDistill}</span>
           ) : null}
         </div>
-        <label className="switch" aria-label="run 结束后自动提炼">
+        <label className="switch" aria-label="Auto-distill after run">
           <input
             type="checkbox"
             checked={autoDistill}
@@ -222,17 +222,17 @@ export function MemorySettingsPanel({
 
       <div className="switch-row">
         <div className="switch-label">
-          <span className="switch-title">自动召回长期记忆</span>
+          <span className="switch-title">Auto-recall long-term memory</span>
           <span className="switch-desc">
-            开新对话时检索相关冻结记忆并注入；同会话复用，线索句可刷新
+            Retrieve relevant frozen memories at the start of a new session and inject them; reused within the same session, trigger phrases can refresh
           </span>
           {!ovReady ? (
             <span className="switch-desc memory-distill-inactive">
-              当前未生效：OpenViking 未就绪
+              Currently inactive: OpenViking not ready
             </span>
           ) : null}
         </div>
-        <label className="switch" aria-label="自动召回长期记忆">
+        <label className="switch" aria-label="Auto-recall long-term memory">
           <input
             type="checkbox"
             checked={autoRecall}
@@ -247,10 +247,9 @@ export function MemorySettingsPanel({
 
       <div className="memory-embedding-block">
         <div className="switch-label">
-          <span className="switch-title">Embedding（独立端点）</span>
+          <span className="switch-title">Embedding (dedicated endpoint)</span>
           <span className="switch-desc">
-            语义检索专用；勿填对话模型 API（如 DeepSeek）。密钥走 credentials /
-            环境变量。
+            For semantic search only; do not use a chat model API (e.g. DeepSeek). Credentials via credentials / env vars.
           </span>
         </div>
         <div className="field-group input-medium">
@@ -267,7 +266,7 @@ export function MemorySettingsPanel({
         </div>
         <div className="field-group input-medium">
           <label className="field-label" htmlFor="ov-emb-model">
-            模型名
+            Model name
           </label>
           <input
             className="text-input"
@@ -279,7 +278,7 @@ export function MemorySettingsPanel({
         </div>
         <div className="field-group input-medium">
           <label className="field-label" htmlFor="ov-emb-api-key-env">
-            API Key 环境变量
+            API Key env var
           </label>
           <input
             className="text-input"
@@ -300,23 +299,23 @@ export function MemorySettingsPanel({
             value={embApiKeyDraft}
             placeholder={
               embKeyFromEnv
-                ? "已由环境变量提供（只读）"
+                ? "Provided by env var (read-only)"
                 : embCredential?.configured
-                  ? "已保存，留空则保持不变"
-                  : "粘贴 Embedding API Key"
+                  ? "Saved — leave blank to keep unchanged"
+                  : "Paste Embedding API Key"
             }
             disabled={embKeyFromEnv || saving || !baseUrl}
             onChange={(event) => setEmbApiKeyDraft(event.target.value)}
           />
           {embKeyFromEnv ? (
             <span className="field-hint">
-              当前由环境变量 {embApiKeyEnv} 提供
+              Currently provided by env var {embApiKeyEnv}
             </span>
           ) : null}
         </div>
         <div className="field-group input-medium">
           <label className="field-label" htmlFor="ov-emb-dimension">
-            维度（可选）
+            Dimension (optional)
           </label>
           <input
             className="text-input"
@@ -348,7 +347,7 @@ export function MemorySettingsPanel({
               }).then(() => setEmbApiKeyDraft(""));
             }}
           >
-            {saving ? "保存中…" : "保存 Embedding"}
+            {saving ? "Saving…" : "Save Embedding"}
           </button>
         </div>
       </div>
@@ -369,14 +368,14 @@ export function MemorySettingsPanel({
             onClick={() => void retryOpenVikingStatus(baseUrl)}
           >
             <RefreshCw width={14} height={14} aria-hidden />
-            重试
+            Retry
           </button>
           <button
             type="button"
             className="mcp-link"
             onClick={onScrollToModels}
           >
-            配置模型与 Provider
+            Configure models & provider
           </button>
         </div>
       </div>
@@ -388,9 +387,9 @@ export function MemorySettingsPanel({
           aria-expanded={advancedOpen}
           onClick={() => setAdvancedOpen((open) => !open)}
         >
-          <span className="memory-advanced-title">高级</span>
+          <span className="memory-advanced-title">Advanced</span>
           <span className="memory-advanced-hint">
-            VLM 模型覆盖与 MCP URL
+            VLM model override & MCP URL
           </span>
           {advancedOpen ? (
             <ChevronUp width={16} height={16} aria-hidden />
@@ -402,13 +401,13 @@ export function MemorySettingsPanel({
           <div className="memory-advanced-body">
             <div className="field-group input-medium">
               <label className="field-label" htmlFor="ov-vlm-model">
-                VLM 模型覆盖
+                VLM model override
               </label>
               <input
                 className="text-input"
                 id="ov-vlm-model"
                 value={vlmModel}
-                placeholder="留空则用 Agent 默认模型"
+                placeholder="Leave blank to use the Agent's default model"
                 onChange={(event) => setVlmModel(event.target.value)}
               />
             </div>
@@ -422,7 +421,7 @@ export function MemorySettingsPanel({
                 value={mcpUrl}
                 readOnly
               />
-              <span className="field-hint">只读；本机 OpenViking HTTP MCP 地址</span>
+              <span className="field-hint">Read-only; local OpenViking HTTP MCP address</span>
             </div>
             <div className="action-row">
               <button
@@ -433,7 +432,7 @@ export function MemorySettingsPanel({
                   void saveOpenVikingOverrides(baseUrl, { vlmModel });
                 }}
               >
-                {saving ? "保存中…" : "保存 VLM 覆盖"}
+                {saving ? "Saving…" : "Save VLM override"}
               </button>
             </div>
           </div>
@@ -442,16 +441,16 @@ export function MemorySettingsPanel({
 
       <div className="memory-footer">
         <span className="helper-text">
-          OpenViking 以 AGPLv3 提供。见 P2.5 / P2.5b · 提炼 P3 · 召回 P4
+          OpenViking is provided under AGPLv3. See P2.5 / P2.5b · Distill P3 · Recall P4
         </span>
         <a
           className="mcp-link"
           href={OPENVIKING_RUNTIME_README_URL}
           target="_blank"
           rel="noreferrer"
-          title="仓库内 openviking-runtime README（AGPLv3）"
+          title="openviking-runtime README in repo (AGPLv3)"
         >
-          查看文档
+          View docs
         </a>
       </div>
     </div>

@@ -48,13 +48,13 @@ export function Workbench() {
   return (
     <div className="flex h-full min-h-0 flex-col" data-workbench>
       <header className="topbar">
-        <span className="topbar-title">Agent 工作台</span>
+        <span className="topbar-title">Agent Workbench</span>
         <label className="model-switcher-trigger">
           <select
             className="model-switcher-select font-mono text-xs"
             value={currentModel}
             disabled={!config || switching}
-            aria-label="选择默认模型"
+            aria-label="Select default model"
             data-current-model={currentModel}
             onChange={(e) => {
               void onModelChange(e.target.value);
@@ -74,9 +74,9 @@ export function Workbench() {
           data-open-settings
           onClick={() => setView("settings")}
         >
-          设置
+          Settings
         </button>
-        <button type="button" className="avatar" aria-label="用户菜单">
+        <button type="button" className="avatar" aria-label="User menu">
           <User />
         </button>
       </header>

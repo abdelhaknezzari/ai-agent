@@ -24,11 +24,11 @@ function nodeTitle(node: TraceNode): string {
     case "run_end":
       return `Run ${node.reason}`;
     case "generation":
-      return node.name ? `模型 · ${node.name}` : "模型 · 生成";
+      return node.name ? `Model · ${node.name}` : "Model · generation";
     case "tool":
       return node.name;
     case "error":
-      return "错误";
+      return "Error";
     default:
       return "node";
   }
@@ -51,12 +51,12 @@ function nodeTime(node: TraceNode): string | undefined {
 function nodeSummary(node: TraceNode): string | undefined {
   switch (node.kind) {
     case "generation":
-      return node.status === "running" ? "生成中…" : node.status;
+      return node.status === "running" ? "Generating…" : node.status;
     case "tool":
       if (node.summary) {
         return node.summary;
       }
-      return node.status === "running" ? "执行中…" : node.status;
+      return node.status === "running" ? "Running…" : node.status;
     case "error":
       return node.message;
     default:
@@ -75,7 +75,7 @@ export function TraceTimeline({ nodes, isLive = false }: TraceTimelineProps) {
       {isLive ? (
         <div className="trace-live-indicator" data-trace-live>
           <span className="live-dot" aria-hidden />
-          <span>进行中</span>
+          <span>In progress</span>
         </div>
       ) : null}
       <div className="trace-timeline-list">

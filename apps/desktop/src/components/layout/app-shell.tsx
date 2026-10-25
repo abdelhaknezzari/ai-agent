@@ -15,12 +15,12 @@ const NAV_ITEMS: Array<{
   icon: typeof LayoutGrid;
   view?: AppView;
 }> = [
-  { label: "工作台", icon: LayoutGrid, view: "workbench" },
-  { label: "工具市场", icon: Puzzle },
-  { label: "任务历史", icon: History },
-  { label: "记忆系统", icon: Brain },
-  { label: "设置", icon: Settings, view: "settings" },
-  { label: "帮助/文档", icon: HelpCircle },
+  { label: "Workbench", icon: LayoutGrid, view: "workbench" },
+  { label: "Tool Store", icon: Puzzle },
+  { label: "Task History", icon: History },
+  { label: "Memory", icon: Brain },
+  { label: "Settings", icon: Settings, view: "settings" },
+  { label: "Help / Docs", icon: HelpCircle },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -29,7 +29,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="app-shell" data-app-shell>
-      <aside className="sidebar" aria-label="主导航">
+      <aside className="sidebar" aria-label="Main navigation">
         <div className="brand">
           <Sparkles className="brand-icon" aria-hidden />
           <span className="brand-text">Agent</span>

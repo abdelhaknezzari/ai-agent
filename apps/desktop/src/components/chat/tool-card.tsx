@@ -30,7 +30,7 @@ export function ToolCard({
           {item.name}
           <span className="ml-2 text-muted-foreground">{item.status}</span>
         </span>
-        <span className="text-xs text-muted-foreground">{open ? "收起" : "展开"}</span>
+        <span className="text-xs text-muted-foreground">{open ? "Collapse" : "Expand"}</span>
       </button>
       {open ? (
         <div className="space-y-2 border-t px-3 py-2">

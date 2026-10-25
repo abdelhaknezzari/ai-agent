@@ -80,10 +80,10 @@ export function ProviderSettings() {
   return (
     <div className="mt-6 space-y-4" data-provider-settings>
       <div>
-        <h3 className="text-sm font-medium">模型 Provider</h3>
+        <h3 className="text-sm font-medium">Model Provider</h3>
         <p className="mt-1 text-xs text-muted-foreground">
-          密钥仍从环境变量读取（如 <code>{apiKeyEnv}</code>
-          ），此处只改接口地址与模型名。
+          The key is still read from env vars (e.g. <code>{apiKeyEnv}</code>
+          ); only the base URL and model name are changed here.
         </p>
       </div>
 
@@ -121,7 +121,7 @@ export function ProviderSettings() {
       </label>
 
       <label className="block space-y-1 text-sm">
-        <span className="text-muted-foreground">模型名</span>
+        <span className="text-muted-foreground">Model name</span>
         <Input
           value={model}
           onChange={(e) => {
@@ -136,10 +136,10 @@ export function ProviderSettings() {
 
       <div className="rounded-md border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
         <div>
-          密钥环境变量：<code>{apiKeyEnv}</code>（不在此填写密钥）
+          Key env var: <code>{apiKeyEnv}</code> (do not enter the key here)
         </div>
         <div className="mt-1 font-mono">
-          生效引用：openai/{model || "…"}
+          Effective reference: openai/{model || "…"}
         </div>
       </div>
 
@@ -154,11 +154,11 @@ export function ProviderSettings() {
             apiBaseUrl: apiBaseUrl.trim(),
             model: model.trim(),
           })
-            .then(() => setSavedHint("已保存，下一轮对话立即生效"))
+            .then(() => setSavedHint("Saved — takes effect on the next conversation"))
             .finally(() => setSaving(false));
         }}
       >
-        {saving ? "保存中…" : "保存模型设置"}
+        {saving ? "Saving…" : "Save model settings"}
       </Button>
 
       {savedHint ? (
